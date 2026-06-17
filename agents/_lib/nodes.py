@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from langchain.chat_models import init_chat_model
+from langchain_openai import ChatOpenAI
 from langgraph.config import get_stream_writer
 from langgraph.types import interrupt
 from pydantic import BaseModel, Field
@@ -17,11 +17,10 @@ _hint_model_cache: Any = None
 def init_models(env: dict[str, str]):
     global _question_model_cache, _hint_model_cache
     if _question_model_cache is None:
-        base = init_chat_model(
+        base = ChatOpenAI(
             model=env["AI_GATEWAY_MODEL"],
             api_key=env["AI_GATEWAY_API_KEY"],
             base_url=env["AI_GATEWAY_BASE_URL"],
-            model_provider="openai",
             temperature=0.7,
         )
         _question_model_cache = base.bind_tools([{
@@ -33,11 +32,10 @@ def init_models(env: dict[str, str]):
             },
         }])
     if _hint_model_cache is None:
-        _hint_model_cache = init_chat_model(
+        _hint_model_cache = ChatOpenAI(
             model=env["AI_GATEWAY_MODEL"],
             api_key=env["AI_GATEWAY_API_KEY"],
             base_url=env["AI_GATEWAY_BASE_URL"],
-            model_provider="openai",
             temperature=0.7,
             tags=["hint"],
         )
