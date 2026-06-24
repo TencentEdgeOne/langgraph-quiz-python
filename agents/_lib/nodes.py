@@ -16,12 +16,16 @@ _hint_model_cache: Any = None
 
 def init_models(env: dict[str, str]):
     global _question_model_cache, _hint_model_cache
+    model_id = env["AI_GATEWAY_MODEL"]
+    # DeepSeek models support thinking/reasoning; disable via extra_body
+    extra_body = {"thinking": {"type": "disabled"}} if "deepseek" in model_id.lower() else None
     if _question_model_cache is None:
         base = ChatOpenAI(
-            model=env["AI_GATEWAY_MODEL"],
+            model=model_id,
             api_key=env["AI_GATEWAY_API_KEY"],
             base_url=env["AI_GATEWAY_BASE_URL"],
             temperature=0.7,
+            extra_body=extra_body,
         )
         _question_model_cache = base.bind_tools([{
             "type": "function",
@@ -33,11 +37,12 @@ def init_models(env: dict[str, str]):
         }])
     if _hint_model_cache is None:
         _hint_model_cache = ChatOpenAI(
-            model=env["AI_GATEWAY_MODEL"],
+            model=model_id,
             api_key=env["AI_GATEWAY_API_KEY"],
             base_url=env["AI_GATEWAY_BASE_URL"],
             temperature=0.7,
             tags=["hint"],
+            extra_body=extra_body,
         )
 
 
