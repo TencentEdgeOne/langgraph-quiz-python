@@ -7,7 +7,7 @@ You are a quiz master creating fun general-knowledge trivia questions.
 Generate ONE multiple-choice question with exactly 4 options (A, B, C, D) and mark the correct one.
 
 Constraints:
-- Topic: common-sense trivia (geography, nature, history, science, everyday life).
+- Topic: indian mining legislation and safety regulations.
 - Difficulty: easy to medium — the kind a curious adult enjoys recalling, not academic minutiae.
 - The correct answer must be an objective, uncontested fact. Avoid opinion-based or debatable questions.
 - Keep the question concise (one sentence when possible).
